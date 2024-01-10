@@ -22,26 +22,18 @@ jobs:
       #
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        # windows-latest would need some sqlite3 first
+        #   (Could NOT # find SQLite3 (missing: SQLite3_INCLUDE_DIR SQLite3_LIBRARY))
+        os: [ubuntu-latest]
         build_type: [Release]
-        c_compiler: [gcc, clang, cl]
+        # clang: include/c++/13/chrono:2320:48: error: call to consteval function 'std::chrono::hh_mm_ss::_S_fractional_width' is not a constant expression
+        # cl: needs windows
+        c_compiler: [gcc]
         include:
-          - os: windows-latest
-            c_compiler: cl
-            cpp_compiler: cl
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
-          - os: ubuntu-latest
-            c_compiler: clang
-            cpp_compiler: clang++
-        exclude:
-          - os: windows-latest
-            c_compiler: gcc
-          - os: windows-latest
-            c_compiler: clang
-          - os: ubuntu-latest
-            c_compiler: cl
+
 
     steps:
     - uses: actions/checkout@v3
