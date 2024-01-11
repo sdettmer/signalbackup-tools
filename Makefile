@@ -34,30 +34,6 @@ OBJ=$(SRC:cc=o)
 $(BIN): $(OBJ)
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
-all: depend $(BIN)
-
 clean:
-	rm -rf .depend $(BIN) $(OBJ)
+	rm -rf $(BIN) $(OBJ)
 
-# NB: project apparently uses .ih as header files not as linker inputs!
-HEADERS=$(wildcard */*.h *.h)
-
-# optional simplistic automatic dependency tracking for included header files
-#   (more nice would be file-based CXXFLAGS=-MMD but this can be overwritten
-#   by user and damage the logic)
-.PHONY: depend
-depend: .depend
-.SECONDARY: .depend
-.depend: $(SRC) $(HEADERS)
-	@echo updating dependencies...
-	@rm -f "$@"
-	@$(CXX) $(CXXFLAGS) -MM $^ > "$@"
-	@echo Dependencies updated.
-ifneq ($(MAKECMDGOALS),clean)
--include .depend
-endif
-
-# optionally reduce output (but Steffen does not like this :))
-#ifndef VERBOSE
-#.SILENT:
-#endif
