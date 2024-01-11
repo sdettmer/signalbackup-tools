@@ -19,7 +19,7 @@ ifeq ($(CONFIG),nixpkgs-darwin)
   LDFLAGS=-Wall -Wextra -O3
 endif
 ifeq ($(CONFIG),windows)
-  CXX=x86_64-w64-mingw32-g++"
+  CXX=x86_64-w64-mingw32-g++
   CXXFLAGS=-Wall -Wextra -Wshadow -Wold-style-cast -Woverloaded-virtual -pedantic -D_WIN32_WINNT=0x600 -I/usr/x86_64-w64-mingw32/include/ -O3 -flto $(CXXSTD) $(CXXFLAGSEXTRA)
   LDFLAGS=-Wall -Wextra -Wl,--as-needed -static-libgcc -static-libstdc++ -static -L/usr/x86_64-w64-mingw32/lib/ -O3 -s -flto=auto
   LDLIBS=-lcrypto -lsqlite3 -lssp -luser32 -lcrypt32 -ladvapi32 -lgdi32 -lws2_32
@@ -49,10 +49,10 @@ HEADERS=$(wildcard */*.h *.h)
 depend: .depend
 .SECONDARY: .depend
 .depend: $(SRC) $(HEADERS)
-	@echo updating depencies...
+	@echo updating dependencies...
 	@rm -f "$@"
 	@$(CXX) $(CXXFLAGS) -MM $^ > "$@"
-	@echo Depencies updated.
+	@echo Dependencies updated.
 ifneq ($(MAKECMDGOALS),clean)
 -include .depend
 endif
